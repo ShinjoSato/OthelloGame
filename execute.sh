@@ -1,3 +1,5 @@
+cd src
+
 javac -d classes FrameBase.java
 javac -d classes HomePanel.java
 javac -d classes Main15.java
