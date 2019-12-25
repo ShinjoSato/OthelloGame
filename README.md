@@ -1,5 +1,9 @@
 # Othello
 
+<div style="text-align: center;">
+    <image src="images/image01.png">
+</div>
+
 ## あらすじ
 
 メイン文は```FrameBase.java```とする．
@@ -19,25 +23,6 @@ $java FrameBase
 ますはじめに，コードの整理から始めたい．
 今の状態でも最低限動作するが，動作が思いと思う．
 
-## 追記(2019-10-04)
-緑色のボード、石が表示されなくなってしまった。
-
-原因は、
-- import java.awt.*;
-- import javax.swing.*;
-この２つの可能性が考えられる。
-
-## 検証(2019-10-31)
-
-|ファイル名|コンパイル|メッセージ or メモ|
-|:-|:-:|:-|
-|Othello.java|○|またはJavaFXアプリケーション・クラスはjavafx.application.Applicationを拡張する必要があります|
-|OthelloArt.java|○|またはJavaFXアプリケーション・クラスはjavafx.application.Applicationを拡張する必要があります|
-|OthPanel.java|○|またはJavaFXアプリケーション・クラスはjavafx.application.Applicationを拡張する必要があります|
-|PlayPanel.java|○|またはJavaFXアプリケーション・クラスはjavafx.application.Applicationを拡張する必要があります|
-|SetPanel.java|○|またはJavaFXアプリケーション・クラスはjavafx.application.Applicationを拡張する必要があります|
-|FrameBase.java|○|JFrameが作成され、プレイできる。しかし、<strong style="color: red;">画像が表示されない！！</strong>|
-|HomePanel.java|○|またはJavaFXアプリケーション・クラスはjavafx.application.Applicationを拡張する必要があります|
-|Main15.java|○|Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 61|
-|OthConstant.java|○|またはJavaFXアプリケーション・クラスはjavafx.application.Applicationを拡張する必要があります|
-|MainFrame.java|×|<strong style="color: red;">MainFrame.java:7: エラー: 無効なメソッド宣言です。戻り値の型が必要です。</strong>|
+## Task list
+- [ ] When the black or white put twice in a row and pushing BACK buttom, it's another turn.
+- [ ] Including MineSweeper.

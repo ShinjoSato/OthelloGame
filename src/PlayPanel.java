@@ -56,9 +56,10 @@ public class PlayPanel extends JPanel implements MouseListener, MouseMotionListe
     }
     public void run(int x,int y){
         repaint();
-        if(oth.search(x,y,stone)&&oth.table[x][y][oth.z]==0){//もし(x,y)にc（黒or白)を置けるなら
-            oth.putStone(x,y,stone);//周りの石尾裏返す
-            stone=oth.nextStone(stone*(-1));
+        if(Operator.search(oth,x,y,stone)&&oth.table[x][y][oth.getZ()]==0){//もし(x,y)にc（黒or白)を置けるなら
+            //oth.putStone(x,y,stone);//周りの石尾裏返す
+            oth = Operator.putStone(oth, x, y, stone);
+            stone=Operator.nextStone(oth, stone*(-1));
         }
     }
     public void paintComponent(Graphics g){//ここの中で空白のマスを調整する
@@ -94,16 +95,16 @@ public class PlayPanel extends JPanel implements MouseListener, MouseMotionListe
             for(int j=0;j<oth.size;j++){
                 x1=xzero+(xwidth/oth.size)*(i); y1=yzero+(ywidth/oth.size)*(j);
                 x2=xzero+(xwidth/oth.size)*(i+1); y2=yzero+(ywidth/oth.size)*(j+1);
-                if(oth.table[j][i][oth.z]==1){//黒石を表示
+                if(oth.table[j][i][oth.getZ()]==1){//黒石を表示
                     b++;
                     g.drawImage(icon1.getImage(),x1+1,y1+1,x2-x1-1,y2-y1-1,this);//+1と-1は微調整
                 }
-                if(oth.table[j][i][oth.z]==-1){//白石を表示
+                if(oth.table[j][i][oth.getZ()]==-1){//白石を表示
                     w++;
                     g.drawImage(icon2.getImage(),x1+1,y1+1,x2-x1-1,y2-y1-1,this);
                 }
 
-                if(oth.search(j,i,stone)&&oth.table[j][i][oth.z]==0){
+                if(Operator.search(oth,j,i,stone)&&oth.table[j][i][oth.getZ()]==0){
                     g.setColor(Color.yellow);
                     g.fillRect(x1+2,y1+2,xwidth/oth.size-3,ywidth/oth.size-3);
                 }
@@ -164,9 +165,9 @@ public class PlayPanel extends JPanel implements MouseListener, MouseMotionListe
     class BackListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             System.out.println("BACKを押しました。");
-            if(oth.z-1>=0&&stone!=0){
-                oth.backZ();
-                stone=oth.nextStone(stone*(-1));
+            if(oth.getZ()-1>=0&&stone!=0){
+                Operator.backZ(oth);
+                stone = Operator.nextStone(oth, stone*(-1));
                 repaint();
             }
         }
