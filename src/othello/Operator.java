@@ -1,3 +1,4 @@
+package othello;
 /**
  * It's possible to include Othello variable in this class.
  */

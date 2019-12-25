@@ -1,3 +1,5 @@
+package othello;
+
 public enum Parameter {
     size(18), 
     xwidth(400),
@@ -5,7 +7,7 @@ public enum Parameter {
     xzero(200),
     yzero(44);
 
-    private final int num;
+    public final int num;
 
     private Parameter(int num){
         this.num = num;

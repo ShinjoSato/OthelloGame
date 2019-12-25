@@ -1,6 +1,8 @@
+package othello;
+
 import javax.swing.ImageIcon;
 
-interface OthConstant {
+public interface OthConstant {
     //int size = 18, xwidth = 400, ywidth = 400, xzero = 200, yzero = 44;
     String relative_path = "../images/";
     String[] Stone = { relative_path + "image002.png", // Image of blackStone

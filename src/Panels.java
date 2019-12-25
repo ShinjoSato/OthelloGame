@@ -1,3 +1,5 @@
+import othello.*;
+
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.BasicStroke;
@@ -23,6 +25,19 @@ public class Panels extends JPanel implements MouseListener, MouseMotionListener
     public void mouseClicked(MouseEvent e){}
     public void pc(String str){}
     public void paintComponent(Graphics g){}
+
+    public Graphics createBoard(Graphics g, int size, int x, int y, int width, int height){
+        //g.setColor(Color.green);
+        //g.fillRect(x, y, width, height);
+        g.drawImage(board[0].getImage(), x, y, width, height, this);
+        g.setColor(Color.white);
+        g.drawRect(x, y, width, height);
+        for(int i=0; i<size; i++){
+            g.drawLine(x + (width/size) * i, y, x + (width/size) * i, y + height);
+            g.drawLine(x, y + (height/size) * i, x+width, y+(height/size)*i);
+        }
+        return g;
+    }
 
     public JButton createButton(String name, int font, Color color, int size, int x, int y, int width, int height, boolean isAreaFiiled, boolean isBorder){
     	JButton button = new JButton(name);

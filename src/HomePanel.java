@@ -1,3 +1,5 @@
+import othello.*;
+
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.BasicStroke;
@@ -42,20 +44,8 @@ public class HomePanel extends Panels{
         ImageIcon image=backgroung[3];
         g.drawImage(image.getImage(), 0, 0, 1200, 675, this);
 
-        Graphics2D g2=(Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                            RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setStroke(new BasicStroke(2));
+        g = createBoard(g, size, xzero, yzero, xwidth, ywidth);
 
-        int b=0,w=0;
-        g.setColor(Color.green);
-        g.fillRect(xzero,yzero,xwidth,ywidth);
-        g.setColor(Color.white);
-        g.drawRect(xzero,yzero,xwidth,ywidth);
-        for(int i=0;i<size;i++){
-            g.drawLine(xzero+(xwidth/size)*i,yzero,xzero+(xwidth/size)*i,yzero+ywidth);
-             g.drawLine(xzero,yzero+(ywidth/size)*i,xzero+xwidth,yzero+(ywidth/size)*i);
-        }
         g.setColor(Color.black);
         
         Font font=new Font("Arial",Font.ITALIC,50);

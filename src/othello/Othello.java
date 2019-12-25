@@ -1,3 +1,4 @@
+package othello;
 //Othello.java 要するにオセロ,●=1,○=-1,×=0と考える
 public class Othello {
     protected int[][][] table;

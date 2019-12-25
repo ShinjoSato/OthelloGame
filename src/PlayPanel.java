@@ -1,3 +1,5 @@
+import othello.*;
+
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.BasicStroke;
@@ -5,7 +7,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.event.*;
-//import java.awt.*;
 
 import javax.swing.JComponent;
 import javax.swing.JButton;
@@ -47,18 +48,19 @@ public class PlayPanel extends Panels{
 
     public void mouseClicked(MouseEvent e){
         int x=e.getX(),y=e.getY(),px=0,py=0,xsub=xzero,ysub=yzero;;
+
         if(x>=xzero&&x<=xzero+xwidth&&y>=yzero&&y<=yzero+ywidth){
         //マスに石を置く
-            while(x<xsub||x>=xsub+xwidth/oth.size){
-                xsub+=xwidth/oth.size;
+            while(x<xsub||x>=xsub+xwidth/oth.getSize()){
+                xsub+=xwidth/oth.getSize();
                 px++;
             }
-            if(px==oth.size) px--;
-            while(y<ysub||y>=ysub+ywidth/oth.size){
-                ysub+=ywidth/oth.size;
+            if(px==oth.getSize()) px--;
+            while(y<ysub||y>=ysub+ywidth/oth.getSize()){
+                ysub+=ywidth/oth.getSize();
                 py++;
             }
-            if(py==oth.size) py--;
+            if(py==oth.getSize()) py--;
             run(py,px);
         }
         repaint();
@@ -79,6 +81,8 @@ public class PlayPanel extends Panels{
     public void paintComponent(Graphics g){//ここの中で空白のマスを調整する
         super.paintComponent(g);
 
+        System.out.println("読み込みました");
+
         ImageIcon icon1=istone[2];
         ImageIcon icon2=istone[5];
         
@@ -93,31 +97,25 @@ public class PlayPanel extends Panels{
         ImageIcon image=backgroung[1];
         g.drawImage(image.getImage(), 0, 0, 1200, 675, this);
         
-        int b=0,w=0;
+        g = createBoard(g, size, xzero, yzero, xwidth, ywidth);
 
-        g.drawImage(board[0].getImage(),xzero,yzero,xwidth,ywidth,this);
-        g.setColor(Color.white);
-        g.drawRect(xzero,yzero,xwidth,ywidth);
-        for(int i=0;i<oth.size;i++){
-            g.drawLine(xzero+(xwidth/oth.size)*i,yzero,xzero+(xwidth/oth.size)*i,yzero+ywidth);
-            g.drawLine(xzero,yzero+(ywidth/oth.size)*i,xzero+xwidth,yzero+(ywidth/oth.size)*i);
-        }
-        for(int i=0;i<oth.size;i++){
-            for(int j=0;j<oth.size;j++){
-                x1=xzero+(xwidth/oth.size)*(i); y1=yzero+(ywidth/oth.size)*(j);
-                x2=xzero+(xwidth/oth.size)*(i+1); y2=yzero+(ywidth/oth.size)*(j+1);
-                if(oth.table[j][i][oth.getZ()]==1){//黒石を表示
+        int b=0,w=0;
+        for(int i=0; i<oth.getSize(); i++){
+            for(int j=0;j<oth.getSize(); j++){
+                x1=xzero+(xwidth/oth.getSize())*(i); y1=yzero+(ywidth/oth.getSize())*(j);
+                x2=xzero+(xwidth/oth.getSize())*(i+1); y2=yzero+(ywidth/oth.getSize())*(j+1);
+                if(oth.getSquare(j, i)/*   oth.table[j][i][oth.getZ()]*/==1){//黒石を表示
                     b++;
                     g.drawImage(icon1.getImage(),x1+1,y1+1,x2-x1-1,y2-y1-1,this);//+1と-1は微調整
                 }
-                if(oth.table[j][i][oth.getZ()]==-1){//白石を表示
+                if(oth.getSquare(j, i)/*oth.table[j][i][oth.getZ()]*/==-1){//白石を表示
                     w++;
                     g.drawImage(icon2.getImage(),x1+1,y1+1,x2-x1-1,y2-y1-1,this);
                 }
 
-                if(Operator.search(oth,j,i,stone)&&oth.table[j][i][oth.getZ()]==0){
+                if(Operator.search(oth,j,i,stone)&& oth.getSquare(j, i)/*  oth.table[j][i][oth.getZ()]*/==0){
                     g.setColor(Color.yellow);
-                    g.fillRect(x1+2,y1+2,xwidth/oth.size-3,ywidth/oth.size-3);
+                    g.fillRect(x1+2,y1+2,xwidth/oth.getSize()-3,ywidth/oth.getSize()-3);
                 }
             }
         }
@@ -126,29 +124,29 @@ public class PlayPanel extends Panels{
         if(stone==0){
             if(b>w){
                 g.setColor(Color.black);
-                g.drawString("Winner:Black!!",xzero+(xwidth/oth.size)*(oth.size/2)-80,yzero+ywidth+30);
+                g.drawString("Winner:Black!!", xzero+(xwidth/oth.getSize())*(oth.getSize()/2)-80,yzero+ywidth+30);
             }else if(b<w){
                 g.setColor(Color.white);
-                g.drawString("Winner:White!!",xzero+(xwidth/oth.size)*(oth.size/2)-80,yzero+ywidth+30);
+                g.drawString("Winner:White!!", xzero+(xwidth/oth.getSize())*(oth.getSize()/2)-80,yzero+ywidth+30);
             }else{
                 g.setColor(Color.lightGray);
-                g.drawString("Draw Match!!",xzero+(xwidth/oth.size)*(oth.size/2)-80,yzero+ywidth+30);
+                g.drawString("Draw Match!!", xzero+(xwidth/oth.getSize())*(oth.getSize()/2)-80,yzero+ywidth+30);
             }
         }else{
             if(stone==1){
                 g.setColor(Color.black);
-                g.drawString("Next:Black",xzero+(xwidth/oth.size)*(oth.size/2)-70,yzero+ywidth+30);
+                g.drawString("Next:Black",xzero+(xwidth/oth.getSize())*(oth.getSize()/2)-70,yzero+ywidth+30);
             }else if(stone==-1){
                 g.setColor(Color.white);
-                g.drawString("Next:White",xzero+(xwidth/oth.size)*(oth.size/2)-70,yzero+ywidth+30);
+                g.drawString("Next:White",xzero+(xwidth/oth.getSize())*(oth.getSize()/2)-70,yzero+ywidth+30);
             }
         }
         g.setColor(Color.lightGray);
-        if(b>w) g.drawString(">",xzero+(xwidth/oth.size)*(oth.size/2)-15,yzero+ywidth+60);
-        else if(b<w) g.drawString("<",xzero+(xwidth/oth.size)*(oth.size/2)-15,yzero+ywidth+60);
-        else g.drawString("=",xzero+(xwidth/oth.size)*(oth.size/2)-15,yzero+ywidth+60);
-        g.setColor(Color.black); g.drawString("BLACK:"+b,xzero+(xwidth/oth.size)*(oth.size/2)-160,yzero+ywidth+60);
-        g.setColor(Color.white); g.drawString("WHITE:"+w,xzero+(xwidth/oth.size)*(oth.size/2)+40,yzero+ywidth+60);
+        if(b>w) g.drawString(">",xzero+(xwidth/oth.getSize())*(oth.getSize()/2)-15,yzero+ywidth+60);
+        else if(b<w) g.drawString("<",xzero+(xwidth/oth.getSize())*(oth.getSize()/2)-15,yzero+ywidth+60);
+        else g.drawString("=",xzero+(xwidth/oth.getSize())*(oth.getSize()/2)-15,yzero+ywidth+60);
+        g.setColor(Color.black); g.drawString("BLACK:"+b,xzero+(xwidth/oth.getSize())*(oth.getSize()/2)-160,yzero+ywidth+60);
+        g.setColor(Color.white); g.drawString("WHITE:"+w,xzero+(xwidth/oth.getSize())*(oth.getSize()/2)+40,yzero+ywidth+60);
 
         b1 = createButton("BACK", Color.blue, 25, 330, 500, 120, 50);
         add(b1);
@@ -171,7 +169,7 @@ public class PlayPanel extends Panels{
         public void actionPerformed(ActionEvent e){
             System.out.println("BACKを押しました。");
             if(oth.getZ()-1>=0&&stone!=0){
-                Operator.backZ(oth);
+                oth = Operator.backZ(oth);
                 stone = Operator.nextStone(oth, stone*(-1));
                 repaint();
             }
@@ -181,7 +179,7 @@ public class PlayPanel extends Panels{
     class RecetListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             stone=1;
-            int size=oth.size;
+            int size=oth.getSize();
             int[][][] table=new int[size][size][size*size-4+1]; 
             System.out.println("RECETを押しました");
             oth=new Othello(size,table);
