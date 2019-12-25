@@ -1,3 +1,6 @@
+/**
+ * It's possible to include Othello variable in this class.
+ */
 public class Operator{
     public static Othello putStone(Othello oth, int x, int y, int c) {// ○または●を置く
         if (search(oth,x, y, c) && oth.getSquare(x, y) == 0) {// もし(x,y)にc（黒or白)を置けるなら

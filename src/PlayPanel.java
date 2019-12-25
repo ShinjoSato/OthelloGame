@@ -1,15 +1,28 @@
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.BasicStroke;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.event.*;
-import javax.swing.*;
+//import java.awt.*;
+
+import javax.swing.JComponent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-public class PlayPanel extends JPanel implements MouseListener, MouseMotionListener, OthPanel, OthConstant{
+import javax.swing.ImageIcon;
+
+public class PlayPanel extends Panels{
     FrameBase fb;
     String str;
 
     int size,x1,y1,x2,y2;
     private int stone=1;
+    
+    private int xwidth=Parameter.xwidth.get(), ywidth=Parameter.ywidth.get();
+    private int xzero=Parameter.xzero.get(), yzero=Parameter.yzero.get();
+    
     protected Othello oth;
     protected JButton b1,b2,btn,btn1;
     public PlayPanel(FrameBase fb,String str){
@@ -19,23 +32,19 @@ public class PlayPanel extends JPanel implements MouseListener, MouseMotionListe
         this.setBackground(Color.darkGray);
         this.setLayout(null);
         
-        this.setSize(1000, 1000);//ここ変えたい
+        this.setSize(1200, 675);//ここ変えたい
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        this.size=8;
+        this.size=18;
         int[][][] t=new int[size][size][size*size-4+1];
-        oth=new Othello(size,t,0);
+        oth=new Othello(size,t);
     }
+    @Override
     public void pc(String str){
         fb.changePanel((JPanel)this, str);
     }
-    public void mouseEntered(MouseEvent e){}
-    public void mouseExited(MouseEvent e){}
-    public void mouseReleased(MouseEvent e){}
-    public void mousePressed(MouseEvent e){}
-    public void mouseDragged(MouseEvent e){}
-    public void mouseMoved(MouseEvent e){}
+
     public void mouseClicked(MouseEvent e){
         int x=e.getX(),y=e.getY(),px=0,py=0,xsub=xzero,ysub=yzero;;
         if(x>=xzero&&x<=xzero+xwidth&&y>=yzero&&y<=yzero+ywidth){
@@ -54,36 +63,38 @@ public class PlayPanel extends JPanel implements MouseListener, MouseMotionListe
         }
         repaint();
     }
+
+    /**
+     * ここに int[] stone = new int[z];を組み込みたい
+     */
     public void run(int x,int y){
         repaint();
-        if(Operator.search(oth,x,y,stone)&&oth.table[x][y][oth.getZ()]==0){//もし(x,y)にc（黒or白)を置けるなら
+        if(Operator.search(oth,x,y,stone)&&oth.getSquare(x, y)==0){//もし(x,y)にc（黒or白)を置けるなら
             //oth.putStone(x,y,stone);//周りの石尾裏返す
             oth = Operator.putStone(oth, x, y, stone);
             stone=Operator.nextStone(oth, stone*(-1));
         }
     }
+    @Override
     public void paintComponent(Graphics g){//ここの中で空白のマスを調整する
         super.paintComponent(g);
 
         ImageIcon icon1=istone[2];
         ImageIcon icon2=istone[5];
         
-        btn = new JButton("~ Home ~");
-        btn.setBounds(xzero,0,100,yzero-5);
+        btn = createButton("~ Home ~", Font.PLAIN, 14, xzero, 0, 100, yzero-5, true, true);
         btn.addActionListener(new HomeListener());
         this.add(btn);
 
-        btn1=new JButton("~ Setting ~");
-        btn1.setBounds(xzero+100,0,100,yzero-5);
+        btn1 = createButton("~ Setting ~", Font.PLAIN, 14, xzero+100, 0, 100, yzero-5, true, true);
         btn1.addActionListener(new SetListener());
         this.add(btn1);
 
-        ImageIcon image=backgroung[0];
-        g.drawImage(image.getImage(),0,0,700,600,this);
+        ImageIcon image=backgroung[1];
+        g.drawImage(image.getImage(), 0, 0, 1200, 675, this);
         
         int b=0,w=0;
-        //g.setColor(Color.green);
-        //g.fillRect(xzero,yzero,xwidth,ywidth);
+
         g.drawImage(board[0].getImage(),xzero,yzero,xwidth,ywidth,this);
         g.setColor(Color.white);
         g.drawRect(xzero,yzero,xwidth,ywidth);
@@ -139,21 +150,11 @@ public class PlayPanel extends JPanel implements MouseListener, MouseMotionListe
         g.setColor(Color.black); g.drawString("BLACK:"+b,xzero+(xwidth/oth.size)*(oth.size/2)-160,yzero+ywidth+60);
         g.setColor(Color.white); g.drawString("WHITE:"+w,xzero+(xwidth/oth.size)*(oth.size/2)+40,yzero+ywidth+60);
 
-        b1=new JButton("BACK");
-        b1.setForeground(Color.blue);
-        b1.setFont(new Font("Arial",Font.ITALIC,25));
-        b1.setBounds(330,500,120,50);
-        b1.setContentAreaFilled(false);
-        b1.setBorderPainted(false);
+        b1 = createButton("BACK", Color.blue, 25, 330, 500, 120, 50);
         add(b1);
         //if(stone==1)b1.setEnabled(false); ここ使えるようにしたい！
         
-        b2=new JButton("RECET");
-        b2.setForeground(Color.red);
-        b2.setFont(new Font("Arial",Font.ITALIC,25));
-        b2.setBounds(330,535,125,50);
-        b2.setContentAreaFilled(false);
-        b2.setBorderPainted(false);
+        b2 = createButton("RECET", Color.red, 25, 330, 535, 125, 50);
         add(b2);
         
         setLayout(null);
@@ -162,6 +163,10 @@ public class PlayPanel extends JPanel implements MouseListener, MouseMotionListe
         b2.addActionListener(new RecetListener());
     }
 
+    /**
+     * stone = Operator.nextStone(oth, stone*(-1)); を
+     * stone = stone[z-1]; に書き換えたい
+     */
     class BackListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             System.out.println("BACKを押しました。");
@@ -172,26 +177,15 @@ public class PlayPanel extends JPanel implements MouseListener, MouseMotionListe
             }
         }
     }
+
     class RecetListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             stone=1;
             int size=oth.size;
             int[][][] table=new int[size][size][size*size-4+1]; 
             System.out.println("RECETを押しました");
-            oth=new Othello(size,table,0);
+            oth=new Othello(size,table);
             repaint();
-        }
-    }
-    class HomeListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            System.out.println("HOMEを押しました");
-            pc(fb.PanelName[0]);
-        }
-    }
-    class SetListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            System.out.println("SETTINGを押しました");
-            pc(fb.PanelName[2]);
         }
     }
 }

@@ -25,4 +25,7 @@ $java FrameBase
 
 ## Task list
 - [ ] When the black or white put twice in a row and pushing BACK buttom, it's another turn.
+    - [ ] Create new int[z], which includes 1 or -1, black stone or white one in the turn in two functions: ```class BackListener ``` and ```void run(int x,int y)``` in ```PlayPanel.java```.
+
+## Feature
 - [ ] Including MineSweeper.

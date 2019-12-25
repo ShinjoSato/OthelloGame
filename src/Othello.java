@@ -4,10 +4,10 @@ public class Othello {
     protected int size;
     private int z;
 
-    public Othello(int size, int[][][] table, int z) {
+    public Othello(int size, int[][][] table) {
         this.table = table;
         this.size = size;// オセロ盤のサイズを変更する
-        this.z = z;
+        this.z = 0;
         table[size / 2 - 1][size / 2 - 1][0] = 1;
         table[size / 2][size / 2][0] = 1;
         table[size / 2 - 1][size / 2][0] = -1;

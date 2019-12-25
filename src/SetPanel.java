@@ -1,16 +1,27 @@
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.BasicStroke;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.event.*;
-import javax.swing.*;
+
 import javax.swing.JComponent;
-import java.lang.Thread;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 
-
-public class SetPanel extends JPanel implements ActionListener ,MouseListener, MouseMotionListener, OthPanel, OthConstant{
+public class SetPanel extends Panels{
     FrameBase fb;
     String str;
     private JButton b1,b2;
     int size,x1,y1,x2,y2;
+
+    private int xwidth=Parameter.xwidth.get(), ywidth=Parameter.ywidth.get();
+    private int xzero=Parameter.xzero.get(), yzero=Parameter.yzero.get();
+
     public SetPanel(FrameBase fb,String str){
         this.fb=fb;
         this.str=str;
@@ -18,20 +29,18 @@ public class SetPanel extends JPanel implements ActionListener ,MouseListener, M
         this.setBackground(Color.darkGray);
         this.setLayout(null);
         this.size=8;
-        this.setSize(800,600);//ここ変えたい
+        this.setSize(1200, 675);//ここ変えたい
     }    
     public void pc(String str){
         fb.changePanel((JPanel)this,str);
     }
-    public void mouseEntered(MouseEvent e){}
-    public void mouseExited(MouseEvent e){}
-    public void mouseReleased(MouseEvent e){}
-    public void mousePressed(MouseEvent e){}
-    public void mouseDragged(MouseEvent e){}
-    public void mouseMoved(MouseEvent e){}
-    public void mouseClicked(MouseEvent e){}
+
     public void paintComponent(Graphics g){//ここの中で空白のマスを調整する
         super.paintComponent(g);
+
+        ImageIcon image=backgroung[2];
+        g.drawImage(image.getImage(), 0, 0, 1200, 675, this);
+
         int b=0,w=0;
         g.setColor(Color.green);
         g.fillRect(xzero,yzero,xwidth,ywidth);
@@ -43,21 +52,10 @@ public class SetPanel extends JPanel implements ActionListener ,MouseListener, M
         }
         g.setColor(Color.black);
         
-        Font font=new Font("Arial",Font.ITALIC,50);
-        g.setFont(font);
-
-        b1=new JButton("~ Play ~");
-        //b1.setFont(new Font("Arial",Font.ITALIC,40));
-        b1.setBounds(xzero+100, 0, 100, yzero-5);
-        b1.setContentAreaFilled(true);//ボタンの中の色
-        b1.setBorderPainted(true);//ボタンの淵
+        b1 = createButton("~ Play ~", Font.PLAIN, 14, xzero+100, 0, 100, yzero-5, true, true);
         add(b1);
 
-        b2=new JButton("~ Home ~");
-        //b2.setFont(new Font("Arial",Font.ITALIC,40));
-        b2.setBounds(xzero, 0, 100, yzero-5);
-        b2.setContentAreaFilled(true);//ボタンの中の色
-        b2.setBorderPainted(true);//ボタンの淵
+        b2 = createButton("~ Home ~", Font.PLAIN, 14, xzero, 0, 100, yzero-5, true, true);
         add(b2);
 
         ImageIcon icon1=new ImageIcon("image002.png");
@@ -72,20 +70,9 @@ public class SetPanel extends JPanel implements ActionListener ,MouseListener, M
         b1.addActionListener(new PlayListener());
         b2.addActionListener(new HomeListener());
     }
+
     public void actionPerformed(ActionEvent e) {
         JComboBox cb = (JComboBox)e.getSource();
         System.out.println(cb.getSelectedItem());
      }
-    class PlayListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            System.out.println("Playを押しました。");
-            pc(fb.PanelName[1]);
-        }
-    }
-    class HomeListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            System.out.println("Homeを押しました。");
-            pc(fb.PanelName[0]);
-        }
-    }
 }

@@ -3,11 +3,11 @@ import javax.swing.JPanel;
 
 public class FrameBase extends JFrame {
     public String[] PanelName = { "home", "play", "set" };
-    OthPanel[] op = new OthPanel[3];
+    Panels[] op = new Panels[3];
 
     public FrameBase() {
         super("OTHELLO");
-        this.setSize(900, 750);
+        this.setSize(1200, 675);    // 16:9
 
         op[0] = new HomePanel(this, PanelName[0]);
         this.add((HomePanel) op[0]);
@@ -41,6 +41,26 @@ public class FrameBase extends JFrame {
             op[2] = (SetPanel) jp;
             ((SetPanel) op[2]).setVisible(false);
         }
+        /*
+        switch(name){
+            case PanelName[0]:{
+                op[0] = (HomePanel) jp;
+                ((HomePanel) op[0]).setVisible(false);
+                break;
+            }
+            case PanelName[1]:{
+                op[1] = (PlayPanel) jp;
+                ((PlayPanel) op[1]).setVisible(false);
+                break;
+            }
+            case PanelName[2]:{
+                op[2] = (SetPanel) jp;
+                ((SetPanel) op[2]).setVisible(false);
+                break;
+            }
+        }*/
+
+
         if (str == PanelName[0]) {
             ((HomePanel) op[0]).setVisible(true);
         } else if (str == PanelName[1]) {
@@ -48,5 +68,11 @@ public class FrameBase extends JFrame {
         } else if (str == PanelName[2]) {
             ((SetPanel) op[2]).setVisible(true);
         }
+
+        /*switch(str){
+            case PanelName[0]: ((HomePanel) op[0]).setVisible(true); break;
+            case PanelName[1]: ((PlayPanel) op[1]).setVisible(true); break;
+            case PanelName[2]: ((SetPanel) op[2]).setVisible(true); break;
+        }*/
     }
 }
