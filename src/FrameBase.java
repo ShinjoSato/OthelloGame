@@ -9,7 +9,7 @@ public class FrameBase extends JFrame {
 
     public FrameBase() {
         super("OTHELLO");
-        this.setSize(1200, 675);    // 16:9
+        this.setSize(818, 600);
 
         op[0] = new HomePanel(this, PanelName[0]);
         this.add((HomePanel) op[0]);

@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
+import javax.swing.border.BevelBorder;
 
 public class PlayPanel extends Panels{
     FrameBase fb;
@@ -37,7 +38,7 @@ public class PlayPanel extends Panels{
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        this.size=18;
+        this.size=8;
         int[][][] t=new int[size][size][size*size-4+1];
         oth=new Othello(size,t);
     }
